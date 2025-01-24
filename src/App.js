@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useState } from "react";
+import { useSelector } from 'react-redux';
+import Sidebar from "./components/Sidebar";
+import TodoSection from "./components/TodoSection";
+import AuthPage from "./components/AuthPage";
+import "./styles/styles.css";
 
-function App() {
+const App = () => {
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle("dark-mode", !darkMode);
+  };
+
+  if (!isAuthenticated) {
+    return <AuthPage />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+      </button>
+      <Sidebar />
+      <TodoSection />
     </div>
   );
-}
+};
 
 export default App;
